@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    working_dir: /usr/src/fastfood
+    container_name: fastfood
+    ports:
+      - "8080:8080"
