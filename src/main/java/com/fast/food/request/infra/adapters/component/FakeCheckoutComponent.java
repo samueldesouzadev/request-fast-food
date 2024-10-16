@@ -1,6 +1,7 @@
 package com.fast.food.request.infra.adapters.component;
 
 import com.fast.food.request.infra.adapters.constants.DemandStatusEnum;
+import com.fast.food.request.infra.adapters.constants.PaymentStatusEnum;
 import com.fast.food.request.infra.adapters.entities.DemandEntity;
 import com.fast.food.request.infra.adapters.repositories.jpa.DemandJPARepository;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -23,22 +24,14 @@ public class FakeCheckoutComponent {
 
     @Scheduled(cron = "*/6 * * * * *", zone = TIME_ZONE)
     public void cron() {
-        System.out.println("ATUALIZANDO STATUS DO PEDIDOS");
-        List<DemandEntity> demandEntityList = demandJPARepository.findDemandEntitiesByNotDemandStatus();
+        System.out.println("ATUALIZANDO STATUS DE PAGAMENTO");
+        List<DemandEntity> demandEntityList = demandJPARepository.findDemandEntitiesByNotComplete();
         if (!demandEntityList.isEmpty()) {
             for (DemandEntity demandEntity : demandEntityList) {
-                if (demandEntity.getDemandStatus().equals(DemandStatusEnum.RECEIVED)) {
-                    demandEntity.setDemandStatus(DemandStatusEnum.IN_PREPARATION);
+                if (demandEntity.getPaymentStatus().equals(PaymentStatusEnum.NOT_PAY)) {
+                    demandEntity.setPaymentStatus(PaymentStatusEnum.PAID);
                     demandJPARepository.save(demandEntity);
-                    System.out.println("PEDIDO ATUALIZADO PARA - IN_PREPARATION");
-                } else if (demandEntity.getDemandStatus().equals(DemandStatusEnum.IN_PREPARATION)) {
-                    demandEntity.setDemandStatus(DemandStatusEnum.READY);
-                    demandJPARepository.save(demandEntity);
-                    System.out.println("PEDIDO ATUALIZADO PARA - READY");
-                } else if (demandEntity.getDemandStatus().equals(DemandStatusEnum.READY)) {
-                    demandEntity.setDemandStatus(DemandStatusEnum.COMPLETED);
-                    demandJPARepository.save(demandEntity);
-                    System.out.println("PEDIDO ATUALIZADO PARA - COMPLETED");
+                    System.out.println("PEDIDO ATUALIZADO PARA - PEDIDO PADO");
                 }
             }
         } else {

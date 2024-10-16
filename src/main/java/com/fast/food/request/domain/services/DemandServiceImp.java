@@ -4,6 +4,7 @@ import com.fast.food.request.domain.Client;
 import com.fast.food.request.domain.Demand;
 import com.fast.food.request.domain.Product;
 import com.fast.food.request.domain.dtos.DemandDTO;
+import com.fast.food.request.domain.dtos.DemandStatusDTO;
 import com.fast.food.request.domain.dtos.OrderDTO;
 import com.fast.food.request.domain.mapper.OrderMapper;
 import com.fast.food.request.domain.ports.interfaces.DemandServicePort;
@@ -11,6 +12,8 @@ import com.fast.food.request.domain.ports.repositories.ClientRepositoryPort;
 import com.fast.food.request.domain.ports.repositories.DemandRepositoryPort;
 import com.fast.food.request.domain.ports.repositories.ProductRepositoryPort;
 import com.fast.food.request.infra.adapters.constants.DemandStatusEnum;
+import com.fast.food.request.infra.adapters.constants.PaymentStatusEnum;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -31,21 +34,45 @@ public class DemandServiceImp implements DemandServicePort {
 
 
     @Override
-    public void save(DemandDTO demandDTO) {
+    public Long save(DemandDTO demandDTO) {
+
         Client client = clientRepositoryPort.findByCpf(demandDTO.getCpfClient());
-        List<Product> productDTOList = new ArrayList<>();
-        for (String nameProduct: demandDTO.getNameProductList()){
-            productDTOList.add(productRepositoryPort.findByName(nameProduct));
+        if (client == null) {
+            throw new EntityNotFoundException("Client not found for CPF: " + demandDTO.getCpfClient());
         }
+
+        List<Product> productList = new ArrayList<>();
+        for (String productDTO : demandDTO.getNameProductList()) {
+            Product product = productRepositoryPort.findByName(productDTO);
+            if (product != null) {
+                productList.add(product);
+            } else {
+                throw new EntityNotFoundException("Product not found: " + productDTO);
+            }
+        }
+
         Demand demand = new Demand();
         demand.setDemandStatus(DemandStatusEnum.RECEIVED);
         demand.setClient(client);
-        demand.setProducts(productDTOList);
-        demandRepositoryPort.save(demand);
+        demand.setProducts(productList);
+        demand.setPaymentStatus(PaymentStatusEnum.NOT_PAY);
+        return demandRepositoryPort.save(demand);
     }
 
     @Override
     public List<OrderDTO> findAll() {
         return OrderMapper.INSTANCE.mapList(demandRepositoryPort.findAll());
+    }
+
+    @Override
+    public DemandStatusDTO findDemandByNumberDemand(Long numberDemand) {
+        return OrderMapper.INSTANCE.mapStatus(demandRepositoryPort.findDemandStatus(numberDemand));
+    }
+
+    @Override
+    public void updateStatus(DemandStatusEnum statusOrder, Long idOrder){
+        Demand demand = demandRepositoryPort.findDemandStatus(idOrder);
+        demand.setDemandStatus(statusOrder);
+        demandRepositoryPort.save(demand);
     }
 }

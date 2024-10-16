@@ -12,12 +12,12 @@ import java.util.UUID;
 @Repository
 public interface DemandJPARepository extends JpaRepository<DemandEntity, UUID> {
 
-    @Query(value = "SELECT * FROM DEMAND", nativeQuery = true)
+    @Query(value = "SELECT * FROM DEMAND as D WHERE D.", nativeQuery = true)
     List<DemandEntity> findByAll();
 
     @Query(value = "SELECT * FROM DEMAND AS D WHERE D.DEMAND_NUMBER = ?1", nativeQuery = true)
     Optional<DemandEntity> findByDemandNumber(Long demandNumber);
 
     @Query(value = "SELECT * FROM DEMAND AS D WHERE D.DEMAND_STATUS IN ('RECEIVED', 'IN_PREPARATION', 'READY')", nativeQuery = true)
-    List<DemandEntity> findDemandEntitiesByNotDemandStatus();
+    List<DemandEntity> findDemandEntitiesByNotComplete();
 }

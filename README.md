@@ -10,6 +10,14 @@ https://miro.com/app/board/uXjVKqr79DQ=/?share_link_id=357707453100
 - URL: http://localhost:8080/swagger-ui.html
 > Documentação do back-end.
 
+### GITHUB
+- PARA USAR AS COLLECTIONS CRIADAS E DEMAIS INFORMAÇÕES DO PROJETO ACESSO O GITHUB:
+- https://github.com/samueldesouzadev/request-fast-food
+
+### LINK PARA VIDEO DE EXPLICACAO
+O VIDEO ESTÁ NO CANAL ABAIXO, É O UNICO VIDEO DISPONÍVEL NO CANAL
+- https://www.youtube.com/@SamuelSouza-v1m
+
 
 A aplicacao quando iniciada, já vem com clientes cadastrados
 voce pode utilizalos para fazer teste

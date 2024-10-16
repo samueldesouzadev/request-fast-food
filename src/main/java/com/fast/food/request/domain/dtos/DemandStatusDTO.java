@@ -1,4 +1,4 @@
-package com.fast.food.request.domain;
+package com.fast.food.request.domain.dtos;
 
 import com.fast.food.request.infra.adapters.constants.DemandStatusEnum;
 import com.fast.food.request.infra.adapters.constants.PaymentStatusEnum;
@@ -9,10 +9,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class Demand {
-    private Client client;
-    private List<Product> products;
-    private DemandStatusEnum demandStatus;
-    private PaymentStatusEnum paymentStatus;
+public class DemandStatusDTO {
     private Long demandNumber;
+    private PaymentStatusEnum statusPayment;
 }

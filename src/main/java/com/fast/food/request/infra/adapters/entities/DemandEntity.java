@@ -1,6 +1,7 @@
 package com.fast.food.request.infra.adapters.entities;
 
 import com.fast.food.request.infra.adapters.constants.DemandStatusEnum;
+import com.fast.food.request.infra.adapters.constants.PaymentStatusEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,8 +19,6 @@ import java.util.List;
 public class DemandEntity {
 
     @Id
-    @NotNull
-    @Column
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long demandNumber;
 
@@ -41,4 +40,9 @@ public class DemandEntity {
     @Column
     @Enumerated(EnumType.STRING)
     private DemandStatusEnum demandStatus;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private PaymentStatusEnum paymentStatus;
+
 }
