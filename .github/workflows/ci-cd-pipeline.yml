@@ -26,5 +26,5 @@ jobs:
           AWS_REGION: "us-east-2"
         run: |
           docker build -t request-fast-food .
-          docker tag request-fast-food:latest ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/request-fast-food:latest
-          docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/request-fast-food:latest
+          docker tag request-fast-food:latest ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/prod/request-fast-food:latest
+          docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/prod/request-fast-food:latest
