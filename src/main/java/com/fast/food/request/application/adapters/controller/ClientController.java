@@ -46,8 +46,12 @@ public class ClientController {
     })
     @PostMapping("/save")
     public ResponseEntity<String> saveClient(@RequestBody ClientDTO clientDTO){
-        clientServicePort.save(clientDTO);
-        return ResponseEntity.ok("Cliente salvo com sucesso");
+        try {
+            clientServicePort.save(clientDTO);
+            return ResponseEntity.ok("Cliente salvo com sucesso");
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body("Erro ao salvar Cliente - ERRO: " + e.getMessage());
+        }
     }
 
 

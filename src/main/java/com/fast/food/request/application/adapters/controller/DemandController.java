@@ -29,7 +29,7 @@ public class DemandController {
         this.demandServicePort = demandServicePort;
     }
 
-    @Operation(summary = "Salva nova demanda", method = "POST")
+    @Operation(summary = "Cria uma nova demanda", method = "POST")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Produto Salvo com sucesso"),
             @ApiResponse(responseCode = "422", description = "Requisição inválida"),
