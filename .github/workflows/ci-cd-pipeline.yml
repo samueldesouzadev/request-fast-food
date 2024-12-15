@@ -1,61 +1,28 @@
-name: CI/CD Pipeline
+name: Build and Push to ECR
 
 on:
   push:
     branches:
-      - main  # Aciona o workflow sempre que houver push na branch main
+      - main
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # Usar a última versão do Ubuntu
-
-    steps:
-    # Passo 1: Checkout do repositório
-    - name: Checkout code
-      uses: actions/checkout@v3
-
-    # Passo 2: Configurar o Docker Buildx
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
-
-    # Passo 3: Login no DockerHub (se você usar Docker Hub)
-    - name: Log in to AWS ECR
-      uses: aws-actions/amazon-ecr-login@v1
-
-    # Passo 4: Construir a imagem Docker
-    - name: Build Docker image
-      run: |
-        docker build -t ${{ secrets.ECR_REPOSITORY }} .
-    
-    # Passo 5: Tag para ECR
-    - name: Tag Docker image
-      run: |
-        docker tag ${{ secrets.ECR_REPOSITORY }}:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:latest
-
-    # Passo 6: Enviar a imagem para o ECR
-    - name: Push Docker image to ECR
-      run: |
-        docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:latest
-
-  deploy:
-    needs: build
     runs-on: ubuntu-latest
 
     steps:
-    # Passo 1: Checkout do repositório
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    # Passo 2: Definir o AWS CLI
-    - name: Set up AWS CLI
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-east-2
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v1
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: us-east-2 
 
-    # Passo 3: Atualizar a definição da tarefa ECS com a nova imagem Docker
-    - name: Update ECS service
-      run: |
-        ecs-cli configure --region ${{ secrets.AWS_REGION }} --cluster ${{ secrets.ECS_CLUSTER_NAME }}
-        ecs-cli compose --file docker-compose.yml service up
+      - name: Build, tag, and push image to Amazon ECR
+        run: |
+          docker build -t request-fast-food .
+          docker tag request-fast-food:latest <AWS_ACCOUNT_ID>.dkr.ecr.<AWS_REGION>.amazonaws.com/request-fast-food:latest
+          docker push <AWS_ACCOUNT_ID>.dkr.ecr.<AWS_REGION>.amazonaws.com/request-fast-food:latest
+          
