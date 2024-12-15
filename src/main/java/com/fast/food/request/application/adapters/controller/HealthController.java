@@ -12,7 +12,7 @@ public class HealthController {
 
     @GetMapping
     public String healthCheck() {
-        log.info("HealthCheck LIVE");
+        log.info("HealthCheck LIVE !");
         return "OK";
     }
 }
