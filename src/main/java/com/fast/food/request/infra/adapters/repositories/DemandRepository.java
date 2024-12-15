@@ -3,7 +3,6 @@ package com.fast.food.request.infra.adapters.repositories;
 import com.fast.food.request.domain.Demand;
 import com.fast.food.request.domain.ports.repositories.DemandRepositoryPort;
 import com.fast.food.request.infra.adapters.constants.DemandStatusEnum;
-import com.fast.food.request.infra.adapters.constants.PaymentStatusEnum;
 import com.fast.food.request.infra.adapters.entities.DemandEntity;
 import com.fast.food.request.infra.adapters.mapper.DemandMapper;
 import com.fast.food.request.infra.adapters.repositories.jpa.DemandJPARepository;

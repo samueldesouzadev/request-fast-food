@@ -2,7 +2,6 @@ package com.fast.food.request.domain.ports.repositories;
 
 
 import com.fast.food.request.domain.Demand;
-import com.fast.food.request.infra.adapters.constants.PaymentStatusEnum;
 
 import java.util.List;
 

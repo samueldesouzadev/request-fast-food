@@ -1,6 +1,5 @@
 package com.fast.food.request.infra.adapters.component;
 
-import com.fast.food.request.infra.adapters.constants.DemandStatusEnum;
 import com.fast.food.request.infra.adapters.constants.PaymentStatusEnum;
 import com.fast.food.request.infra.adapters.entities.DemandEntity;
 import com.fast.food.request.infra.adapters.repositories.jpa.DemandJPARepository;

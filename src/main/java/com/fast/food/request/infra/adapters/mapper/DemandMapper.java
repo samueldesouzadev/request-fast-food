@@ -1,11 +1,8 @@
 package com.fast.food.request.infra.adapters.mapper;
 
-import com.fast.food.request.domain.Client;
 import com.fast.food.request.domain.Demand;
-import com.fast.food.request.infra.adapters.entities.ClientEntity;
 import com.fast.food.request.infra.adapters.entities.DemandEntity;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;

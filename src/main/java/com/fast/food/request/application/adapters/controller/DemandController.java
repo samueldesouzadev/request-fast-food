@@ -5,7 +5,6 @@ import com.fast.food.request.domain.dtos.DemandStatusDTO;
 import com.fast.food.request.domain.dtos.OrderDTO;
 import com.fast.food.request.domain.ports.interfaces.DemandServicePort;
 import com.fast.food.request.infra.adapters.constants.DemandStatusEnum;
-import com.fast.food.request.infra.adapters.constants.PaymentStatusEnum;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
