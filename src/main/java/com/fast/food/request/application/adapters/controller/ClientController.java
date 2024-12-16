@@ -39,7 +39,7 @@ public class ClientController {
 
     @Operation(summary = "Salva um novo cliente na base de dados", method = "POST")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Cliente Salvo com sucesso"),
+            @ApiResponse(responseCode = "200", description = "Cliente Salvo com sucesso!"),
             @ApiResponse(responseCode = "422", description = "Requisição inválida"),
             @ApiResponse(responseCode = "400", description = "Parametros inválidos"),
             @ApiResponse(responseCode = "500", description = "Erro ao salvar dados"),
