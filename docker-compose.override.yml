@@ -1,0 +1,8 @@
+version: '3.8'
+services:
+  app:
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: admin
