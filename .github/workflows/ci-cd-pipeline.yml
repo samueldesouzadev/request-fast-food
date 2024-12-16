@@ -36,3 +36,4 @@ jobs:
           service: fastfood-api-service
           cluster: my-fastfood-cluster
           wait-for-service-stability: true
+          region: us-east-2
