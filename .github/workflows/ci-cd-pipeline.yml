@@ -31,7 +31,7 @@ jobs:
           docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/prod/request-fastfood:latest
 
       - name: Deploy to ECS
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1.1
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: .github/workflows/ecs/fastfood-api-task.json
           service: fastfood-api-service
