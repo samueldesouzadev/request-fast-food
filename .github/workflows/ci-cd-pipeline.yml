@@ -34,5 +34,5 @@ jobs:
         with:
           task-definition: fastfood-api-task
           service: fastfood-api-service
-          cluster: default
+          cluster: my-fastfood-cluster
           wait-for-service-stability: true
