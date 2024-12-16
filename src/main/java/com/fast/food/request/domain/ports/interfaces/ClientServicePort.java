@@ -8,6 +8,6 @@ import java.util.List;
 public interface ClientServicePort {
 
     List<ClientDTO> findAll();
-    void save(ClientDTO clientDTO);
+    void save(ClientDTO clientDTO) throws Exception;
     ClientDTO findByCpf(String cpfClient);
 }

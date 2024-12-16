@@ -23,7 +23,6 @@ public class FakeCheckoutComponent {
 
     @Scheduled(cron = "*/6 * * * * *", zone = TIME_ZONE)
     public void cron() {
-        System.out.println("ATUALIZANDO STATUS DE PAGAMENTO");
         List<DemandEntity> demandEntityList = demandJPARepository.findDemandEntitiesByNotComplete();
         if (!demandEntityList.isEmpty()) {
             for (DemandEntity demandEntity : demandEntityList) {
@@ -33,8 +32,6 @@ public class FakeCheckoutComponent {
                     System.out.println("PEDIDO ATUALIZADO PARA - PEDIDO PADO");
                 }
             }
-        } else {
-            System.out.println("NENHUM PEDIDO PARA ATUALIZAR");
         }
     }
 }

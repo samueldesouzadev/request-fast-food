@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface ClientRepositoryPort {
     List<Client> findAll();
-    void save(Client client);
+    void save(Client client) throws Exception;
     Client findByCpf(String cpfClient);
 }

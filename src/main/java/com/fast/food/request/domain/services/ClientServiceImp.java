@@ -25,7 +25,7 @@ public class ClientServiceImp implements ClientServicePort {
     }
 
     @Override
-    public void save(ClientDTO clientDTO) {
+    public void save(ClientDTO clientDTO) throws Exception {
         this.clientRepositoryPort.save(ClientMapper.INSTANCE.map(clientDTO));
     }
 
