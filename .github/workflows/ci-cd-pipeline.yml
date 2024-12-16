@@ -32,7 +32,7 @@ jobs:
       - name: Deploy to ECS
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
-          task-definition: fastfood-api-task
+          task-definition: .github/workflows/ecs/fastfood-api-task.json
           service: fastfood-api-service
           cluster: my-fastfood-cluster
           wait-for-service-stability: true
