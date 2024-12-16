@@ -3,7 +3,8 @@
     {
       "name": "fastfood-api-container",
       "image": "975049941121.dkr.ecr.us-east-2.amazonaws.com/prod/request-fastfood:latest",
-      "cpu": 1024,
+      "cpu": 2048,
+      "memory": 2048,
       "portMappings": [
         {
           "name": "fastfood-api-container-8080-tcp",
@@ -98,8 +99,8 @@
   "requiresCompatibilities": [
     "FARGATE"
   ],
-  "cpu": "1024",
-  "memory": "3072",
+  "cpu": "2048",
+  "memory": "4096",
   "runtimePlatform": {
     "cpuArchitecture": "X86_64",
     "operatingSystemFamily": "LINUX"
