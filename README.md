@@ -15,7 +15,7 @@ https://miro.com/app/board/uXjVKqr79DQ=/?share_link_id=357707453100
 - https://github.com/samueldesouzadev/request-fast-food
 
 ### LINK PARA VIDEO DE EXPLICACAO
-O VIDEO ESTÁ NO CANAL ABAIXO, É O UNICO VIDEO DISPONÍVEL NO CANAL
+O VIDEO ESTÁ NO CANAL ABAIXO
 - https://www.youtube.com/@SamuelSouza-v1m
 
 
