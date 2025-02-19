@@ -28,7 +28,5 @@ Tambem temos produtos cadastrados, voce pode utilizados para criar um novo pedid
 
 > ex: nome produto: Quarterão com Queijo
 
-![img.png](img/img.png)
-
 O Status do pedido será atualizado automaticamente de 6 em 6 segundos
 até chegar no status de : finalizado
