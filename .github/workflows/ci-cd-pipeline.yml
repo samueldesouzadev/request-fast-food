@@ -59,14 +59,14 @@ jobs:
 
       - name: Build application with Maven
         run: mvn clean package -DskipTests
-        working-directory: ${{ github.workspace }}/request-fast-food/${{ matrix.service }}
+        working-directory: ${{ github.workspace }}/${{ matrix.service }}
 
       - name: Build, tag, and push image to Amazon ECR
         env:
           AWS_ACCOUNT_ID: "975049941121"
           AWS_REGION: "us-east-2"
         run: |
-          docker build -t ${{ matrix.service }} ${{ github.workspace }}/request-fast-food/${{ matrix.service }}
+          docker build -t ${{ matrix.service }} ${{ github.workspace }}/${{ matrix.service }}
           docker tag ${{ matrix.service }}:latest ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/prod/${{ matrix.service }}:latest
           docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/prod/${{ matrix.service }}:latest
 
