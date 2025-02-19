@@ -44,8 +44,8 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Debug - List Repository Files
-        run: ls -R
+      - name: Debug - List Root Repository Files
+        run: ls -R ${{ github.workspace }}
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -56,6 +56,9 @@ jobs:
 
       - name: Log in to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Ensure Target Directory Exists
+        run: mkdir -p ${{ github.workspace }}/${{ matrix.service }}/target
 
       - name: Build application with Maven
         run: mvn clean package -DskipTests
