@@ -47,6 +47,9 @@ jobs:
       - name: Debug - List Root Repository Files
         run: ls -R ${{ github.workspace }}
 
+      - name: Debug - Check Service Directory
+        run: ls -R ${{ github.workspace }}/${{ matrix.service }}
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -60,12 +63,15 @@ jobs:
       - name: Ensure Target Directory Exists
         run: mkdir -p ${{ github.workspace }}/${{ matrix.service }}/target
 
-      - name: Build application with Maven
+      - name: Clean and Compile with Maven
         run: mvn clean package -DskipTests
         working-directory: ${{ github.workspace }}/${{ matrix.service }}
 
       - name: Debug - Check JAR Output
-        run: ls -R ${{ github.workspace }}/${{ matrix.service }}/target
+        run: ls -R ${{ github.workspace }}/${{ matrix.service }}/target || echo "Target folder not found"
+
+      - name: Debug - Maven Build Output
+        run: cat ${{ github.workspace }}/${{ matrix.service }}/target/*.log || echo "No log file found"
 
       - name: Build, tag, and push image to Amazon ECR
         env:
