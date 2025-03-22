@@ -1,4 +1,4 @@
-name: Deploy to AWS ECS
+name: Deploy Microservices to AWS ECS
 
 on:
   push:
@@ -6,38 +6,86 @@ on:
       - main
 
 jobs:
-  deploy:
+  setup-infrastructure:
     runs-on: ubuntu-latest
-
-    env:
-      AWS_REGION: us-east-2
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
     steps:
-      - name: Checkout code
+      - name: Checkout Repository
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-2
+
+      - name: Create ECS Cluster (if not exists)
+        run: |
+          aws ecs describe-clusters --clusters fastfood-cluster || aws ecs create-cluster --cluster-name fastfood-cluster
+
+      - name: Create ECR Repositories (if not exists)
+        run: |
+          for service in client-service order-service product-service; do
+            aws ecr describe-repositories --repository-names prod/$service || \
+            aws ecr create-repository --repository-name prod/$service
+          done
+
+  deploy-services:
+    needs: setup-infrastructure
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: [client-service, order-service, product-service]
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Debug - List Root Repository Files
+        run: ls -R ${{ github.workspace }}
+
+      - name: Debug - Check Service Directory
+        run: ls -R ${{ github.workspace }}/${{ matrix.service }}
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-2
 
       - name: Log in to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v1
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: us-east-2
+
+      - name: Ensure Target Directory Exists
+        run: mkdir -p ${{ github.workspace }}/${{ matrix.service }}/target
+
+      - name: Clean and Compile with Maven
+        run: mvn clean package -DskipTests
+        working-directory: ${{ github.workspace }}/${{ matrix.service }}
+
+      - name: Debug - Check JAR Output
+        run: ls -R ${{ github.workspace }}/${{ matrix.service }}/target || echo "Target folder not found"
+
+      - name: Debug - Maven Build Output
+        run: cat ${{ github.workspace }}/${{ matrix.service }}/target/*.log || echo "No log file found"
 
       - name: Build, tag, and push image to Amazon ECR
         env:
           AWS_ACCOUNT_ID: "975049941121"
           AWS_REGION: "us-east-2"
         run: |
-          docker build -t request-fast-food .
-          docker tag request-fast-food:latest ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/prod/request-fastfood:latest
-          docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/prod/request-fastfood:latest
+          docker build -t ${{ matrix.service }} ${{ github.workspace }}/${{ matrix.service }}
+          docker tag ${{ matrix.service }}:latest ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/prod/${{ matrix.service }}:latest
+          docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/prod/${{ matrix.service }}:latest
 
-      - name: Deploy to ECS
+      - name: Deploy ${{ matrix.service }} to ECS
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
-          task-definition: .github/workflows/ecs/fastfood-api-task.json
-          service: fastfood-api-service
-          cluster: my-fastfood-cluster
+          task-definition: .github/workflows/ecs/${{ matrix.service }}-task.json
+          service: ${{ matrix.service }}-service
+          cluster: fastfood-cluster
           wait-for-service-stability: true

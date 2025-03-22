@@ -15,7 +15,7 @@ https://miro.com/app/board/uXjVKqr79DQ=/?share_link_id=357707453100
 - https://github.com/samueldesouzadev/request-fast-food
 
 ### LINK PARA VIDEO DE EXPLICACAO
-O VIDEO ESTÁ NO CANAL ABAIXO, É O UNICO VIDEO DISPONÍVEL NO CANAL
+O VIDEO ESTÁ NO CANAL ABAIXO
 - https://www.youtube.com/@SamuelSouza-v1m
 
 
@@ -27,8 +27,6 @@ voce pode utilizalos para fazer teste
 Tambem temos produtos cadastrados, voce pode utilizados para criar um novo pedido
 
 > ex: nome produto: Quarterão com Queijo
-
-![img.png](img/img.png)
 
 O Status do pedido será atualizado automaticamente de 6 em 6 segundos
 até chegar no status de : finalizado
